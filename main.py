@@ -7,7 +7,8 @@ def get_info(caminho: str):
         a = []
         for i in file.readlines():
             a += list([*i.replace('\n', '\\n')])
-    return np.asarray(a)
+    a = np.asarray(a)
+    return a
 
 
 def entropia(a):
@@ -16,32 +17,47 @@ def entropia(a):
     return np.sum(-1 * prob * np.log2(prob))
 
 
-def histograma(a, b):
-    #  mostra o histograma num grafico de barras
-    plt.figure()
-    plt.bar(a, b)
-    plt.show()
-    plt.close()
+def histograma(a, b, name, organizacao=False):
+    def normal():
+        #  mostra o histograma num grafico de barras
+        plt.figure(name)
+        plt.bar(a, b)
+        plt.show()
+        plt.close()
+
+    def organizado():
+        d = {}
+        for i, j in zip(a, b):
+            d[str(i)] = j
+
+        plt.figure(name)
+        plt.bar(sorted(d.keys(), key=d.__getitem__, reverse=True), sorted(d.values(), reverse=True))
+        plt.show()
+        plt.close()
+
+    if organizacao:
+        organizado()
+    else:
+        normal()
 
 
-def histograma_org(a, b, name):
-    d = {}
-    for i,j in zip(a, b):
-        d[i] = j
-
-    plt.figure(name)
-    plt.bar(sorted(d.keys(), key=d.__getitem__, reverse=True), sorted(d.values(), reverse=True))
-    plt.show()
-    plt.close()
+def diferenca(letras):
+    final = [ord(letras[0])]
+    for i in range(len(letras[1:])):
+        final += ord(letras[i]) - ord(letras[i-1]),
+    return np.asarray(final)
 
 
 values = ["bible.txt", "finance.csv", "jquery-3.6.0.js", "random.txt"]
 if __name__ == '__main__':
-    for i in values:
-        a = get_info("dataset/"+i)
-        b, cnt = np.unique(a, return_counts=True, axis=0)  # achar as contagens
-        print(i, entropia(a))
+    i = values[-1]
+    a = get_info("dataset/"+i)
+    print(a)
 
-        histograma_org(b, cnt, i)
+    print(i, entropia(a))
+    b, cnt = np.unique(a, return_counts=True, axis=0)  # achar as contagens
+    histograma(b, cnt, i, organizacao=True)
+
+
 
 
