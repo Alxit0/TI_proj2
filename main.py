@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+import btw
 
 
 def get_info(caminho: str):
@@ -52,11 +53,19 @@ values = ["bible.txt", "finance.csv", "jquery-3.6.0.js", "random.txt"]
 if __name__ == '__main__':
     i = values[-1]
     a = get_info("dataset/"+i)
-    print(a)
+    for i in (t := ''.join(a)):
+        if i.isalpha() or i == ' ':
+            print(end=i)
+    print("")
 
-    print(i, entropia(a))
+    for i in btw.bwt(t):
+        if i.isalpha() or i == ' ':
+            print(end=i)
+    print("")
+
+    '''print(i, entropia(a))
     b, cnt = np.unique(a, return_counts=True, axis=0)  # achar as contagens
-    histograma(b, cnt, i, organizacao=True)
+    histograma(b, cnt, i, organizacao=True)'''
 
 
 

@@ -1,0 +1,7 @@
+Huffman coding
+                = Deflate
+LZ77 and LZ78
+Sequitur algorithm
+Re-Pair
+Sequitur algorithm (gramar based) - bom para a biblia
+Burrows–Wheeler transform => make easier to compress (rearanges in order to make more repeated leters together)
