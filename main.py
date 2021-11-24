@@ -51,7 +51,7 @@ def diferenca(letras):
 
 values = ["bible.txt", "finance.csv", "jquery-3.6.0.js", "random.txt"]
 if __name__ == '__main__':
-    i = values[-1]
+    """i = values[-1]
     a = get_info("dataset/"+i)
     for i in (t := ''.join(a)):
         if i.isalpha() or i == ' ':
@@ -62,11 +62,12 @@ if __name__ == '__main__':
         if i.isalpha() or i == ' ':
             print(end=i)
     print("")
-
-    '''print(i, entropia(a))
+"""
+    i = values[3]
+    a = get_info("dataset/" + i)
+    print(i, entropia(a))
     b, cnt = np.unique(a, return_counts=True, axis=0)  # achar as contagens
-    histograma(b, cnt, i, organizacao=True)'''
-
+    histograma(b, cnt, i, organizacao=True)
 
 
 
