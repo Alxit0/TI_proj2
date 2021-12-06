@@ -19,9 +19,9 @@ And God called the firmament Heaven. And the evening and the morning were the se
 And God said, Let the waters under the heaven be gathered together unto one place, and let the dry land appear: and it was so. 
 And God called the dry land Earth; and the gathering together of the waters called he Seas: and God saw that it was good. 
 """
-    print(len(set(t)))
+    print(t)
     a = delta_cod(t)
-    print(len(set(a)))
+    print(a)
 
 
 if __name__ == '__main__':
