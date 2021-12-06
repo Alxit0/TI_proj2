@@ -1,7 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import move_to_front as mtf
-import btw
 
 
 def get_info(caminho: str):
