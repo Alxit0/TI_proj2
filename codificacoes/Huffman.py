@@ -1,117 +1,121 @@
-import numpy as np
-# classes
-if True:
-    class Node:
-        def __init__(self, value=0, left=None, right=None, key=None):
-            self.left = left
-            self.right = right
-            self.value = value
-            self.key = key
-
-        def __str__(self):
-            return f"){self.left},{self.right}("
-
-        def get_type(self):
-            return "normal"
+from codificacoes import binarizacao as bins
 
 
-    class Leaf(Node):
-        def __init__(self, key, value):
-            super().__init__(value)
-            self.key = key
+class _Node:
 
-        def __str__(self):
-            return f"<{self.key},{self.value}>"
+    left_sep = "<"
+    right_sep = ">"
 
-        def get_type(self):
-            return "leaf"
+    def __init__(self, value=None, key=None, left=None, right=None):
+        self.value = value
+        self.key = key
+        self.left = left
+        self.right = right
 
-
-def encode(s: str):
-    def find_paths(node: Node, path="", d=None):
-        if d is None:
-            d = {}
-
-        if node.key is not None:
-            d[node.key] = path
-            return
-        find_paths(node.left, path + '0', d)
-        find_paths(node.right, path + '1', d)
-        return d
-
-    def generate_tree(string: str):
-        valores = np.asarray([*string])
-        d = {k: j for k, j in zip(*np.unique(valores, return_counts=True, axis=0))}  # achar as contagens
-        temp: list[Node] = []
-        for i in sorted(d.keys(), key=d.__getitem__):
-            temp += Leaf(i, d[i]),
-
-        while len(temp) != 1:
-            a = temp.pop()
-            b = temp.pop()
-            temp += Node(a.value + b.value, a, b),
-            temp.sort(key=lambda x: x.value, reverse=True)
-        return temp[0]
-
-    def convert(seq):
-        a = ""
-        for i in range(0, len(seq), 8):
-            a += chr(int(seq[i:i + 8], 2))
-        return a
-
-    arv = generate_tree(s)
-    tabela = find_paths(arv)
-    nova_s = ""
-    for i in s:
-        nova_s += tabela[i]
-    return arv, convert(nova_s)
-    # return arv, nova_s
+    def __str__(self):
+        if self.key is None:
+            return f"{self.left_sep}{self.left}{self.right}{self.right_sep}"
+        else:
+            return str(self.key)
 
 
-def decode(s: str, arv: Node):
-    def translate(seq):
-        b = ""
-        for j in seq:
-            b += bin(ord(j))[2:].zfill(8)
-        return b
+def _generate_tree(seq: str):
+    # obter as contagens
+    conts = {}
+    for i in seq:
+        if i in conts:
+            conts[i] += 1
+        else:
+            conts[i] = 1
+    print(">>> Contagens concluidas")
+    nodes = []
+    for i in sorted(conts, key=conts.__getitem__):
+        nodes += _Node(conts[i], i),
 
-    s = translate(s)
-    pointer = arv
-    resp = ''
-    for i in s:
-        if i == '0':
-            pointer = pointer.left
-        elif i == '1':
-            pointer = pointer.right
-
-        if pointer.key is not None:
-            resp += pointer.key
-            pointer = arv
-    return resp
-
-
-def main():
-    arvore, s_encoded = encode("Burrows–Wheeler transform => make easier to compress (rearanges in order to make "
-                               "more repeated leters together)")
-    print(arvore)
-    print(s_encoded)
-
-    print(decode(s_encoded, arvore))
+    while len(nodes) != 1:
+        a, b = nodes[:2]
+        nodes = nodes[2:]
+        nodes.insert(0, _Node(a.value + b.value, None, b, a))
+        nodes = sorted(nodes, key=lambda x: x.value)
+    print(">>> Arvore concluida")
+    # print(nodes)
+    return nodes[0]
 
 
-def main1():
-    temp = "01011101110"
-    print(temp)
-    a = ""
-    for i in range(0, len(temp), 8):
-        a += chr(int(temp[i:i+8], 2))
-    print(a)
+def _find_paths(node: _Node, path="", d=None):
+    if d is None:
+        d = {}
 
-    b = ""
-    for i in a:
-        b += bin(ord(i))[2:]
-    print(b)
+    if node.key is not None:
+        d[node.key] = path
+        return
+    _find_paths(node.left, path + '0', d)
+    _find_paths(node.right, path + '1', d)
+    return d
+
+
+def _binarizacao(seq: str, paths: dict):
+    final = ''
+    for i in seq:
+        final += paths[i]
+    print(">>> Binarizacao completa")
+    return final
+
+
+class HuffmanCompressor:
+    def __init__(self):
+        pass
+
+    def compress(self, input_file_path, output_file_path):
+        print("="*20, f"Decompress of {input_file_path}", "="*20)
+        data = ""
+        with open(input_file_path, "r")as file:
+            for i in file.readlines():
+                data += i
+        arv = _generate_tree(data)
+
+        psths = _find_paths(arv)
+
+        seps = []
+        for i in range(1, 255):
+            if chr(i) not in psths:
+                seps += chr(i)
+            if len(seps) == 2:
+                break
+        _Node.left_sep, _Node.right_sep = seps
+        # _Node.left_sep, _Node.right_sep = "<", ">"
+        tam_arv = str(arv).count('\n')
+        seq = _binarizacao(data, psths)
+        # print(seq)
+        with open(output_file_path+'.txt', "w+")as file:
+            file.write(str(tam_arv) + _Node.left_sep + _Node.right_sep + str(arv) + '\n' + bins.bin_compression(seq))
+        # print(bins.bin_compression(seq))
+
+    def decompres(self, input_file_path, output_file_path=None):
+        print("=" * 20, f"Decompress of {input_file_path}", "=" * 20)
+        arv = ""
+        data = ""
+        with open(input_file_path, "r")as file:
+            line = file.readline()
+            arv += line[1:]
+            for _ in range(int(line[0])):
+                arv += file.readline()
+            data = ''.join(file.readlines())
+        #print(arv)
+        # print(data)
+
+        l, r = arv[:2]
+        #print(arv[2:])
+        arv = bins.regenerar_arvore(arv[2:], l, r)
+        #print(data)
+        #print(bins.bin_decompression(data))
+        texto = bins.regenera_texto(arv, bins.bin_decompression(data))
+        #print(bins.bin_decompression(data))
+        #print(texto)
+        with open(output_file_path, "w+")as file:
+            file.write(texto)
 
 
 if __name__ == '__main__':
-    main()
+    a = HuffmanCompressor()
+    a.compress("algoritmes", "algoritmes_decompressed")
