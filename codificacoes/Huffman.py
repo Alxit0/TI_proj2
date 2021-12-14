@@ -1,4 +1,5 @@
-from codificacoes import binarizacao as bins
+import analyser
+import binarizacao as bins
 
 
 class _Node:
@@ -66,7 +67,11 @@ class HuffmanCompressor:
     def __init__(self):
         pass
 
-    def compress(self, input_file_path, output_file_path):
+    def compress(self, input_file_path, output_file_path=None):
+
+        if output_file_path is None:
+            output_file_path = "dataset_compressed/" + input_file_path
+        input_file_path = "dataset/" + input_file_path
         print("="*20, f"Decompress of {input_file_path}", "="*20)
         data = ""
         with open(input_file_path, "r")as file:
@@ -87,31 +92,42 @@ class HuffmanCompressor:
         tam_arv = str(arv).count('\n')
         seq = _binarizacao(data, psths)
         # print(seq)
-        with open(output_file_path+'.txt', "w+")as file:
-            file.write(str(tam_arv) + _Node.left_sep + _Node.right_sep + str(arv) + '\n' + bins.bin_compression(seq))
+        string = (str(tam_arv) + _Node.left_sep + _Node.right_sep + str(arv) + '\n').encode("u8")
+        with open(output_file_path, "bw+")as file:
+            file.write(string + bins.bin_compression(seq))
+        # print(str(tam_arv) + _Node.left_sep + _Node.right_sep + str(arv))
         # print(bins.bin_compression(seq))
 
-    def decompres(self, input_file_path, output_file_path=None):
+        # print("=="*100)
+        # print(bins.bin_decompression(bins.bin_compression(seq).decode("u8")))
+
+    def decompress(self, input_file_path, output_file_path=None):
+        if output_file_path is None:
+            output_file_path = "dataset_decompressed/" + input_file_path
+        input_file_path = "dataset_compressed/" + input_file_path
         print("=" * 20, f"Decompress of {input_file_path}", "=" * 20)
         arv = ""
         data = ""
-        with open(input_file_path, "r")as file:
-            line = file.readline()
+        with open(input_file_path, "br")as file:
+            line = file.readline().decode("u8")
             arv += line[1:]
             for _ in range(int(line[0])):
-                arv += file.readline()
-            data = ''.join(file.readlines())
-        #print(arv)
+                arv += file.readline().decode("u8")
+
+            for i in file.readlines():
+                data += i.decode("u8")
+        # print(arv)
         # print(data)
 
         l, r = arv[:2]
-        #print(arv[2:])
+        # print(arv[2:])
         arv = bins.regenerar_arvore(arv[2:], l, r)
-        #print(data)
-        #print(bins.bin_decompression(data))
+        # print(data)
+        # print(bins.bin_decompression(data)[-10:])
         texto = bins.regenera_texto(arv, bins.bin_decompression(data))
-        #print(bins.bin_decompression(data))
-        #print(texto)
+        # print(bins.bin_decompression(data))
+        # print(analyser.em_numeros(data))
+        # print(texto)
         with open(output_file_path, "w+")as file:
             file.write(texto)
 
@@ -119,3 +135,5 @@ class HuffmanCompressor:
 if __name__ == '__main__':
     a = HuffmanCompressor()
     a.compress("algoritmes", "algoritmes_decompressed")
+
+    analyser.em_numeros("abcdefg")

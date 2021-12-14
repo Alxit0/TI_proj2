@@ -1,6 +1,5 @@
 import numpy as np
 from matplotlib import pyplot as plt
-import move_to_front as mtf
 
 
 def get_info(caminho: str):
@@ -50,28 +49,5 @@ def diferenca(letras):
 
 
 values = ["bible.txt", "finance.csv", "jquery-3.6.0.js", "random.txt"]
-
-
-def main1():
-    """i = values[-1]
-        a = get_info("dataset/"+i)
-        for i in (t := ''.join(a)):
-            if i.isalpha() or i == ' ':
-                print(end=i)
-        print("")
-
-        for i in btw.bwt(t):
-            if i.isalpha() or i == ' ':
-                print(end=i)
-        print("")"""
-    i = values[3]
-    a = get_info("dataset/" + i)
-    print(i, entropia(a))
-    b, cnt = np.unique(a, return_counts=True, axis=0)  # achar as contagens
-    histograma(b, cnt, i, organizacao=True)
-def main():
-    print(mtf.encode("abacadda"))
-
-
 if __name__ == '__main__':
-    main()
+    pass
