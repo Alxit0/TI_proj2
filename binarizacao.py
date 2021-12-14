@@ -1,7 +1,8 @@
 def bin_compression(seq: str):
     janela = 8
     final = chr(len(seq) % janela)
-    if final == chr(0):final = chr(8)
+    if final == chr(0):
+        final = chr(8)
     for i in range(0, len(seq), janela):
         temp = int(seq[i:i+janela], 2)
         final += chr(temp)

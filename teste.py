@@ -1,3 +1,6 @@
+from codificacoes import LZ77
+
+
 class ola:
     def __init__(self):
         self.o = 1
@@ -9,16 +12,15 @@ class ola:
 
 def main1():
     with open("ola", "bw+") as file:
-        file.write(chr(10).encode("u8"))
-        file.write(chr(13).encode("u8"))
+        file.write("Ola Eu sou o Alexandre Silva Regalado".encode("u8"))
 
     with open("ola", "br") as file:
         a = ""
         for i in file.readlines():
             a += i.decode("u8")
 
-    print(*map(ord, a))
+    print(a)
 
 
 if __name__ == '__main__':
-    print("0".zfill(4))
+    a = LZ77.LZ77Compressor()
