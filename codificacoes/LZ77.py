@@ -119,7 +119,7 @@ class LZ77Compressor:
 
                 for i in range(length):
                     output_buffer.append(output_buffer[-distance])
-        out_data = b''.join(output_buffer)
+        out_data = ''.join(output_buffer)
 
         if output_file_path:
             try:
