@@ -1,4 +1,4 @@
-def bwt(s: str) -> str:
+def transform(s: str) -> str:
     """Apply Burrows–Wheeler transform to input string."""
     assert "\002" not in s and "\003" not in s, "Input string cannot contain STX and ETX characters"
     s = "\002" + s + "\003"  # Add start and end of text marker
@@ -7,7 +7,7 @@ def bwt(s: str) -> str:
     return "".join(last_column)  # Convert list of characters into string
 
 
-def ibwt(r: str) -> str:
+def detransform(r: str) -> str:
     """Apply inverse Burrows–Wheeler transform."""
     table = [""] * len(r)  # Make empty table
     for i in range(len(r)):

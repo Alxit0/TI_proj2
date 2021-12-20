@@ -36,9 +36,15 @@ class LZ77Compressor:
         except IOError:
             print('Could not open input file ...')
             raise
-
+        print(len(data))
+        print('-'*100)
+        autal = 1
+        tot = len(data)
         while i < len(data):
             # print(i)
+            if autal == int(100 - (len(data) - i) * 100 / tot):
+                autal += 1
+                print(end='#')
 
             match = self.findLongestMatch(data, i)
 
@@ -65,10 +71,9 @@ class LZ77Compressor:
                     print("<0, %s>" % data[i], end='')
 
                 i += 1
-
+        print("#")
         # fill the buffer with zeros if the number of bits is not a multiple of 8
         output_buffer.fill()
-
         # write the compressed data into a binary file if a path is provided
         if output_file_path:
             try:
@@ -101,7 +106,6 @@ class LZ77Compressor:
             raise
 
         while len(data) >= 9:
-
             flag = data.pop(0)
 
             if not flag:
