@@ -101,8 +101,6 @@ class HuffmanCompressor:
         # print(bins.bin_decompression(bins.bin_compression(seq).decode("u8")))
 
     def decompress(self, input_file_path, output_file_path=None):
-        if output_file_path is None:
-            output_file_path = "dataset_decompressed/" + input_file_path
         input_file_path = "dataset_compressed/" + input_file_path
         print("=" * 20, f"Decompress of {input_file_path}", "=" * 20)
         arv = ""

@@ -94,6 +94,7 @@ class LZ77Compressor:
         original form, and written into the output file path if provided. If no output
         file path is provided, the decompressed data is returned as a string
         """
+        input_file_path = "dataset_compressed/" + input_file_path
         data = bitarray(endian='big')
         output_buffer = []
 
@@ -105,7 +106,13 @@ class LZ77Compressor:
             print('Could not open input file ...')
             raise
 
+        print('-'*100)
+        atual = 1
+        tot = len(data)
         while len(data) >= 9:
+            if atual == int(100 - (len(data)*100-1000)/tot):
+                atual += 1
+                print(end='#')
             flag = data.pop(0)
 
             if not flag:
@@ -123,6 +130,7 @@ class LZ77Compressor:
 
                 for i in range(length):
                     output_buffer.append(output_buffer[-distance])
+        print('#')
         out_data = b''.join(output_buffer)
 
         if output_file_path:
