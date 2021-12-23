@@ -69,7 +69,7 @@ class HuffmanCompressor:
 
         if output_file_path is None:
             output_file_path = "dataset_compressed/" + input_file_path
-        print("="*20, f"Decompress of {input_file_path}", "="*20)
+        print("="*20, f"Compress of {input_file_path}", "="*20)
         data = ""
         with open(input_file_path, "r")as file:
             if "Delta" in input_file_path:

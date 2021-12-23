@@ -1,4 +1,6 @@
 def transform(input_name, output_name):
+    with open(output_name, 'wb+') as file:
+        file.write(b'')
     with open(input_name, 'r') as f:
         # s = f.read()
         for s in f.readlines():
@@ -8,8 +10,8 @@ def transform(input_name, output_name):
             table = sorted(s[i:] + s[:i] for i in range(len(s)))  # Table of rotations of string
             last_column = [row[-1:] for row in table]  # Last characters of each row
 
-            with open(output_name, 'a+') as file:
-                file.write("".join(last_column))
+            with open(output_name, 'ab+') as file:
+                file.write("".join(last_column).encode('u8'))
             # return "".join(last_column)  # Convert list of characters into string
 
 
