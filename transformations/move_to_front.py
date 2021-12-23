@@ -24,3 +24,7 @@ def encode(plain_text: str) -> list[int]:
         dictionary.insert(0, c)
 
     return compressed_text
+
+
+if __name__ == '__main__':
+    print(encode("ola Alexa"))

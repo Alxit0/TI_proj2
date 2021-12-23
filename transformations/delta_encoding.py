@@ -1,7 +1,4 @@
-import main as m
-
-
-def delta_cod(a: str):
+def transform(a: str):
     r = [ord(a[0])]
     for i in a[1:]:
         r += ord(i) - r[-1],
@@ -20,7 +17,7 @@ And God said, Let the waters under the heaven be gathered together unto one plac
 And God called the dry land Earth; and the gathering together of the waters called he Seas: and God saw that it was good. 
 """
     print(t)
-    a = delta_cod(t)
+    a = transform(t)
     print(a)
 
 
