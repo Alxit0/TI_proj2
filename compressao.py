@@ -29,11 +29,12 @@ values = ["bible.txt", "finance.csv", "jquery-3.6.0.js", "random.txt"]
 
 
 def main():
+    print("Ficheiro:")
     for i,j in enumerate(values):
         print(f"\t [{i+1}] {j}")
     name = values[int(input('Opçao: '))-1]
     print('ficheiro escolhido:', name)
-    for i,j in enumerate(temp := ["Huffman", "Lz77", "Shanon"]):
+    for i, j in enumerate(temp := ["Huffman", "Lz77", "Shanon"]):
         print(f"\t [{i+1}] {j}")
     try:
         codificacao = temp[int(input('Opçao: '))-1]
@@ -42,6 +43,7 @@ def main():
         print('tecla invalida. Mudado par Huffman')
         codificacao = "Huffman"
 
+    print("Transformacao:")
     for i,j in enumerate(temp := ["Nenhum", "Burrows-Wheeler",
                                   "Delta enconding", "Move to front", "Run Lengh enconding"]):
         print(f"\t [{i}] {j}")
