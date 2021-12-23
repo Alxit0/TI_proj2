@@ -4,9 +4,6 @@ import binarizacao as bins
 
 class _Node:
 
-    left_sep = "<"
-    right_sep = ">"
-
     def __init__(self, value=None, key=None, left=None, right=None):
         self.value = value
         self.key = key
@@ -15,12 +12,12 @@ class _Node:
 
     def __str__(self):
         if self.key is None:
-            return f"{self.left_sep}{self.left}{self.right}{self.right_sep}"
+            return f"[{self.left},{self.right}]"
         else:
-            return str(self.key)
+            return f"'{self.key}'"
 
 
-def _generate_tree(seq: str):
+def _generate_tree(seq: list):
     # obter as contagens
     conts = {}
     for i in seq:
@@ -29,6 +26,7 @@ def _generate_tree(seq: str):
         else:
             conts[i] = 1
     print(">>> Contagens concluidas")
+
     nodes = []
     for i in sorted(conts, key=conts.__getitem__):
         nodes += _Node(conts[i], i),
@@ -74,8 +72,11 @@ class HuffmanCompressor:
         print("="*20, f"Decompress of {input_file_path}", "="*20)
         data = ""
         with open(input_file_path, "r")as file:
-            for i in file.readlines():
-                data += i
+            if "Delta" in input_file_path:
+                data = file.read().split(';')
+            else:
+                for i in file.readlines():
+                    data += i
         arv = _generate_tree(data)
 
         psths = _find_paths(arv)
@@ -84,14 +85,14 @@ class HuffmanCompressor:
         for i in range(1, 255):
             if chr(i) not in psths:
                 seps += chr(i)
-            if len(seps) == 2:
+            if len(seps) == 3:
                 break
-        _Node.left_sep, _Node.right_sep = seps
+        _Node.left_sep, _Node.right_sep, _Node.sep = seps
         # _Node.left_sep, _Node.right_sep = "<", ">"
         tam_arv = str(arv).count('\n')
         seq = _binarizacao(data, psths)
         # print(seq)
-        string = (str(tam_arv) + _Node.left_sep + _Node.right_sep + str(arv) + '\n').encode("u8")
+        string = (str(arv) + '\n').encode("u8")
         with open(output_file_path, "bw+")as file:
             file.write(string + bins.bin_compression(seq))
         # print(str(tam_arv) + _Node.left_sep + _Node.right_sep + str(arv))
@@ -130,7 +131,8 @@ class HuffmanCompressor:
 
 
 if __name__ == '__main__':
-    a = HuffmanCompressor()
-    a.compress("algoritmes", "algoritmes_decompressed")
+    # a = HuffmanCompressor()
+    # a.compress("algoritmes", "algoritmes_decompressed")
+    # analyser.em_numeros("abcdefg")
 
-    analyser.em_numeros("abcdefg")
+    print(_generate_tree([*"ola Alexa"]))

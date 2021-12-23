@@ -3,7 +3,9 @@
 common_dictionary = list(range(256))
 
 
-def encode(plain_text: str) -> list[int]:
+def transform(input_name, output_name):
+    with open(input_name, 'r')as f:
+        plain_text = f.read()
     # Change to bytes for 256.
     plain_text = plain_text.encode('utf-8')
 
@@ -23,8 +25,13 @@ def encode(plain_text: str) -> list[int]:
         dictionary.pop(rank)
         dictionary.insert(0, c)
 
-    return compressed_text
+    # final = b''.join(chr(i) for i in compressed_text)
+    with open(output_name, 'wb+') as f:
+        f.write(b''.join(chr(i).encode('u8') for i in compressed_text))
+
+    # return compressed_text
 
 
 if __name__ == '__main__':
-    print(encode("ola Alexa"))
+    transform('/Users/alexito_player/PycharmProjects/TI_proj2/algoritmes',
+              '/Users/alexito_player/PycharmProjects/TI_proj2/algoritmes_ola.txt')

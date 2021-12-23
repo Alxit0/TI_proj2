@@ -1,10 +1,16 @@
-def transform(s: str) -> str:
-    """Apply Burrows–Wheeler transform to input string."""
-    assert "\002" not in s and "\003" not in s, "Input string cannot contain STX and ETX characters"
-    s = "\002" + s + "\003"  # Add start and end of text marker
-    table = sorted(s[i:] + s[:i] for i in range(len(s)))  # Table of rotations of string
-    last_column = [row[-1:] for row in table]  # Last characters of each row
-    return "".join(last_column)  # Convert list of characters into string
+def transform(input_name, output_name):
+    with open(input_name, 'r') as f:
+        # s = f.read()
+        for s in f.readlines():
+            """Apply Burrows–Wheeler transform to input string."""
+            # assert "\002" not in s and "\003" not in s, "Input string cannot contain STX and ETX characters"
+            # s = "\002" + s + "\003"  # Add start and end of text marker
+            table = sorted(s[i:] + s[:i] for i in range(len(s)))  # Table of rotations of string
+            last_column = [row[-1:] for row in table]  # Last characters of each row
+
+            with open(output_name, 'a+') as file:
+                file.write("".join(last_column))
+            # return "".join(last_column)  # Convert list of characters into string
 
 
 def detransform(r: str) -> str:
@@ -21,4 +27,5 @@ def main():
 
 
 if __name__ == '__main__':
-    print(transform('Ola alexa'))
+    print(transform('/Users/alexito_player/PycharmProjects/TI_proj2/algoritmes',
+                    '/Users/alexito_player/PycharmProjects/TI_proj2/algoritmes_oal.txt'))

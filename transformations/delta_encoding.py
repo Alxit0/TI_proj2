@@ -1,8 +1,14 @@
-def transform(a: str):
+def transform(input_name, output_name):
+    with open(input_name, 'rb')as f:
+        a = f.read().decode('u8')
     r = [ord(a[0])]
     for i in a[1:]:
         r += ord(i) - r[-1],
-    return r
+    # print(*map(hex, r))
+    # final = b''.join(chr(i).encode('u8') for i in r)
+    with open(output_name, 'w+')as f:
+        f.write(';'.join(map(hex, r)))
+    # return final.decode('u8')
 
 
 def main():
@@ -22,4 +28,6 @@ And God called the dry land Earth; and the gathering together of the waters call
 
 
 if __name__ == '__main__':
-    main()
+    print(int("0x110000", 16))
+    transform('/Users/alexito_player/PycharmProjects/TI_proj2/dataset/random.txt',
+              '/Users/alexito_player/PycharmProjects/TI_proj2/ola.txt')

@@ -23,4 +23,4 @@ def main1():
 
 
 if __name__ == '__main__':
-    a = LZ77.LZ77Compressor()
+    print([hex(2323)])

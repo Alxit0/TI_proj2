@@ -125,7 +125,7 @@ class ShanonFanno(object):
         right_tree = self.devide_chars(right)
 
         # computing the pi and flatten the tree to make it easy to compute
-        print(self.char_dict)
+        # print(self.char_dict)
         self.final_flat = []
         return [left_tree, right_tree]
         # left_flat = self.flatten_the_tree(left_tree)
@@ -212,7 +212,7 @@ class ShanonFannoCompressor:
     def __init__(self):
         pass
 
-    def compressor(self, input_file_path, output_file_path=None):
+    def compress(self, input_file_path, output_file_path=None):
         with open(input_file_path, 'r') as f:
             s = f.read()
 
